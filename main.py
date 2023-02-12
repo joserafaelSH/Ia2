@@ -5,37 +5,34 @@ from enums import EstadoJogo
 
 def main():
     jogo = Jogo() 
-    while 1:
+    pontosP1 = 0
+    pontosP2 = 0
+    userInput = ''
+
+    while userInput.upper() != 'X':
         cardP1 = jogo.distribuirCartas()
         cardP2 = jogo.distribuirCartas()
 
-        print('\n====================================================================\n')
+        pontos = jogo.simulaRodada(cardP1, cardP2)
 
-        print(f'Player1: {cardP1}')
-
-
-        decisao = int(input('1 - Aceitar, 2 - Trucar, 3 - Correr): '))
-        print(f'utilidade esperada de trucar: {jogo.utilidadeEsperadaTrucar(True, cardP1):.2f}')
-        print(f'utilidade esperada de correr: {jogo.utilidadeEsperadaCorrer(True, cardP1):.2f}')
-    
-        print('\nPonto de vista Jogador1:')
-        for trucar in [True, False]:
-            for respP2 in list(Resposta):
-                for respP1 in list(Resposta):
-                    UE_RespP1 = jogo.utilidadeEsperadaRespostaP1(respP1, respP2, trucar, cardP1)
-                    print(f'utilidadeEsperada: {UE_RespP1:.2f} / Truco: {trucar}, RespP2: {respP2}, RespP1: {respP1}')
-            
         resultado = jogo.calcularResultado(cardP1, cardP2)
-        print(f'Player2: {cardP2}')
-        print(f'resultado: {resultado.name}')
+        print(f'\n - Resultado do Jogo -\n')
+        print(f'Player 1: {cardP1} - Probabilidade prévia de vitória: {jogo.probWin(cardP1):.2f}')
+        print(f'Player 2: {cardP2} - Probabilidade prévia de vitória: {jogo.probWin(cardP2):.2f}')
+        print(f'Resultado: {pontos} PONTO(S)')
 
-        print('\nPonto de vista Jogador2:')
-        for trucar in [True, False]:
-            for respP2 in list(Resposta):
-                UE_RespP2 = jogo.utilidadeEsperadaRespostaP2(respP2, trucar, cardP2)
-                print(f'utilidadeEsperada: {UE_RespP2:.2f} / Truco: {trucar}, RespP2: {respP2}')
+        if pontos > 0:
+            pontosP1 += pontos
+        else:
+            pontosP2 -= pontos
 
-        x = input()
+        print(f'------------------------------------------------------------------')
+        print(f' - Score -\n')
+        print(f'Jogador 1: {pontosP1} Pontos')
+        print(f'Jogador 2: {pontosP2} Pontos\n')
+        userInput = input('Sair (X) ou Continuar (Enter)? ')
+        print(f'\n==================================================================\n')
+
 
 if __name__ == "__main__":
     main()
